@@ -3,6 +3,7 @@ import 'package:nombre_mystere/Database.dart';
 import 'package:nombre_mystere/Score.dart';
 import 'generat_nombre_mystere.dart';
 import 'check.dart';
+import 'Afficher_score.dart';
 
 
 
@@ -18,6 +19,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: new MyHomePage(title: 'Flutter Template'),
+      routes: <String, WidgetBuilder>{
+        '/home': (BuildContext context) => new MyHomePage(),
+        '/score': (BuildContext context) => new AfficherScore(),
+        /* '/contact': (BuildContext context) => new ContactPage(), */
+      },
       debugShowCheckedModeBanner: false,
     );
   }
@@ -61,8 +67,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           result = result;
                           if  (!etat_partie){
                              ScoreUser scoreUser = new ScoreUser(nom,nb_essais);
-                         var dbHelper = DBHelper();
+                         var dbHelper =  DBHelper();
+                          dbHelper.initDb();
+
                          dbHelper.saveScore(scoreUser);
+                        
+                        
         //afficher la liste des score
 
                           }
@@ -76,7 +86,16 @@ class _MyHomePageState extends State<MyHomePage> {
             
               '$result',
               
+              
             ),
+            IconButton(
+  icon: Icon(Icons.arrow_right),
+  tooltip: 'Increase volume by 10%',
+  onPressed: () {
+     Navigator.of(context).pop();
+                    Navigator.of(context).pushNamed('/score');
+     },
+)
           ],
         ),
       ),

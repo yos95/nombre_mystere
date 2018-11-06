@@ -46,10 +46,16 @@ class DBHelper{
   
   void saveScore(ScoreUser Score) async {
     var dbClient = await db;
+   
+
     await dbClient.transaction((txn) async {
       return await txn.rawInsert(
-          'INSERT INTO Score(nom, score ) VALUES( Score.nom,Score.score)');
+          'INSERT INTO Score(nom, score ) VALUES(\'${Score.nom}\', \'${Score.score}\')'
+          
+          );
   });
+    
+          print('insert effectuer');
 
   }
     }
