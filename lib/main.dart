@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:nombre_mystere/Database.dart';
+import 'package:nombre_mystere/Jeux.dart';
 import 'package:nombre_mystere/Score.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'generat_nombre_mystere.dart';
 import 'check.dart';
 import 'Afficher_score.dart';
+import 'dart:async';
 
 void main() => runApp(new MyApp());
-var dbHelper = DBHelper();
+String nom;
+_SaveNom() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('nom', nom);
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -21,7 +28,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => new MyHomePage(),
         '/score': (BuildContext context) => new AfficherScore(),
-        /* '/contact': (BuildContext context) => new ContactPage(), */
+        '/jeux': (BuildContext context) => new Jeux(),
       },
       debugShowCheckedModeBanner: false,
     );
@@ -37,11 +44,41 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-var nombre_mystere = generat_nombre_mystere();
-String result = '';
-String nom;
-
 class _MyHomePageState extends State<MyHomePage> {
+  final myController = TextEditingController();
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Comment t'appele tu ?"),
+          content: new TextField(
+            controller: myController,
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Valider"),
+              onPressed: () {
+                nom = myController.text;
+                print(nom);
+                _SaveNom();
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) => new Jeux()));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // user defined function
+
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
@@ -51,45 +88,28 @@ class _MyHomePageState extends State<MyHomePage> {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new TextField(onSubmitted: (var string) {
-              nom = string;
-            }),
-            new TextField(
-              enabled: etat_partie,
-              keyboardType: TextInputType.number,
-              onSubmitted: (var string) {
-                nb_essais++;
-                var saisie = int.parse(string);
-                result = check_mystere(saisie, nombre_mystere);
+            new RaisedButton(
+              child: const Text(' Jouer une partie'),
+              color: Theme.of(context).accentColor,
+              elevation: 5.0,
+              splashColor: Colors.blueGrey,
+              onPressed: () {
+                _showDialog();
 
-                setState(() {
-                  result = result;
-                  if (!etat_partie) {
-                    ScoreUser scoreUser = new ScoreUser(nom, nb_essais);
-                    dbHelper.initDb();
-
-                    dbHelper.saveScore(scoreUser);
-
-                    //afficher la liste des score
-
-                  }
-                });
+                // Perform some action
               },
-              decoration: new InputDecoration(
-                  labelText:
-                      'Entrez un chiffre entre 0 et 100 $nombre_mystere'),
             ),
-            new Text(
-              '$result',
-            ),
-            IconButton(
-              icon: Icon(Icons.arrow_right),
-              tooltip: 'Increase volume by 10%',
+            new RaisedButton(
+              child: const Text('Afficher les scores'),
+              color: Theme.of(context).accentColor,
+              elevation: 4.0,
+              splashColor: Colors.blueGrey,
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamed('/score');
+                // Perform some action
               },
-            )
+            ),
           ],
         ),
       ),
