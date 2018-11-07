@@ -2,20 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:nombre_mystere/Database.dart';
 import 'package:nombre_mystere/Score.dart';
 
-
 Future<List<ScoreUser>> fetchScoreUsersromDatabase() async {
   var dbHelper = DBHelper();
   Future<List<ScoreUser>> score = dbHelper.getScores();
   return score;
 }
 
-
-
-                   
-
 class AfficherScore extends StatefulWidget {
-  
-
   final String title = 'Score';
 
   @override
@@ -23,7 +16,6 @@ class AfficherScore extends StatefulWidget {
 }
 
 class _AfficherScore extends State<AfficherScore> {
-  
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
@@ -53,47 +45,24 @@ class _AfficherScore extends State<AfficherScore> {
             } else if (snapshot.data.length == 0) {
               return new Text("No Data found");
             }
-            return new Container(alignment: AlignmentDirectional.center,child: new CircularProgressIndicator(),);
+            return new Container(
+              alignment: AlignmentDirectional.center,
+              child: new CircularProgressIndicator(),
+            );
           },
         ),
       ),
-           /*  new TextField(
-              onSubmitted: (var string){
-                    nom = string ;
-              }
-            ),
-            new TextField(
-              enabled: etat_partie,
-              keyboardType: TextInputType.number,
-            onSubmitted: (var string){
-              nb_essais++;
-             var saisie = int.parse(string);
-            result = check_mystere(saisie, nombre_mystere);
-        
-            setState(() {
-                          result = result;
-                          if  (!etat_partie){
-                             ScoreUser scoreUser = new ScoreUser(nom,nb_essais);
-                         var dbHelper =  DBHelper();
-                          dbHelper.initDb();
-
-                         dbHelper.saveScore(scoreUser);
-                        
-        //afficher la liste des score
-
-                          }
-                        });
-            },
-            decoration: new InputDecoration(
-              labelText: 'Entrez un chiffre entre 0 et 100 $nombre_mystere'
-            ),
-            ),
-            new Text(
-            
-              '$result',
-              
-            ), */
-        
+      floatingActionButton: new FloatingActionButton(
+        onPressed: floatingAppuyer,
+        child: new Icon(Icons.delete),
+      ),
     );
   }
+}
+
+void floatingAppuyer() {
+  var dbHelper = DBHelper();
+
+  dbHelper.initDb;
+  dbHelper.DeleteAll();
 }

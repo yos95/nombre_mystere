@@ -5,13 +5,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'Score.dart';
 
-class DBHelper{
-
+class DBHelper {
   static Database _db;
 
   Future<Database> get db async {
-    if(_db != null)
-      return _db;
+    if (_db != null) return _db;
     _db = await initDb();
     return _db;
   }
@@ -28,10 +26,10 @@ class DBHelper{
   void _onCreate(Database db, int version) async {
     // When creating the db, create the table
     await db.execute(
-    "CREATE TABLE Score(id INTEGER PRIMARY KEY, nom TEXT, score INTEGER)");
+        "CREATE TABLE Score(id INTEGER PRIMARY KEY, nom TEXT, score INTEGER)");
     print("Created tables");
   }
-  
+
   // Retrieving Scores from Score Tables
   Future<List<ScoreUser>> getScores() async {
     var dbClient = await db;
@@ -43,19 +41,21 @@ class DBHelper{
     print(Scores.length);
     return Scores;
   }
-  
+
   void saveScore(ScoreUser Score) async {
     var dbClient = await db;
-   
 
     await dbClient.transaction((txn) async {
       return await txn.rawInsert(
-          'INSERT INTO Score(nom, score ) VALUES(\'${Score.nom}\', \'${Score.score}\')'
-          
-          );
-  });
-    
-          print('insert effectuer');
-
+          'INSERT INTO Score(nom, score ) VALUES(\'${Score.nom}\', \'${Score.score}\')');
+    });
   }
-    }
+
+  void DeleteAll() async {
+    var dbClient = await db;
+    await dbClient.transaction((txn) async {
+/*       return await txn.rawInsert('DELETE FROM Score where nom =?', ['null']); */
+      return await txn.rawInsert('DELETE  FROM Score ');
+    });
+  }
+}

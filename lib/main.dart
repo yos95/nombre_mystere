@@ -5,9 +5,8 @@ import 'generat_nombre_mystere.dart';
 import 'check.dart';
 import 'Afficher_score.dart';
 
-
-
 void main() => runApp(new MyApp());
+var dbHelper = DBHelper();
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -37,9 +36,11 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
-var nombre_mystere =  generat_nombre_mystere() ;
-String result= '';
+
+var nombre_mystere = generat_nombre_mystere();
+String result = '';
 String nom;
+
 class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -50,52 +51,45 @@ class _MyHomePageState extends State<MyHomePage> {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new TextField(
-              onSubmitted: (var string){
-                    nom = string ;
-              }
-            ),
+            new TextField(onSubmitted: (var string) {
+              nom = string;
+            }),
             new TextField(
               enabled: etat_partie,
               keyboardType: TextInputType.number,
-            onSubmitted: (var string){
-              nb_essais++;
-             var saisie = int.parse(string);
-            result = check_mystere(saisie, nombre_mystere);
-        
-            setState(() {
-                          result = result;
-                          if  (!etat_partie){
-                             ScoreUser scoreUser = new ScoreUser(nom,nb_essais);
-                         var dbHelper =  DBHelper();
-                          dbHelper.initDb();
+              onSubmitted: (var string) {
+                nb_essais++;
+                var saisie = int.parse(string);
+                result = check_mystere(saisie, nombre_mystere);
 
-                         dbHelper.saveScore(scoreUser);
-                        
-                        
-        //afficher la liste des score
+                setState(() {
+                  result = result;
+                  if (!etat_partie) {
+                    ScoreUser scoreUser = new ScoreUser(nom, nb_essais);
+                    dbHelper.initDb();
 
-                          }
-                        });
-            },
-            decoration: new InputDecoration(
-              labelText: 'Entrez un chiffre entre 0 et 100 $nombre_mystere'
-            ),
+                    dbHelper.saveScore(scoreUser);
+
+                    //afficher la liste des score
+
+                  }
+                });
+              },
+              decoration: new InputDecoration(
+                  labelText:
+                      'Entrez un chiffre entre 0 et 100 $nombre_mystere'),
             ),
             new Text(
-            
               '$result',
-              
-              
             ),
             IconButton(
-  icon: Icon(Icons.arrow_right),
-  tooltip: 'Increase volume by 10%',
-  onPressed: () {
-     Navigator.of(context).pop();
-                    Navigator.of(context).pushNamed('/score');
-     },
-)
+              icon: Icon(Icons.arrow_right),
+              tooltip: 'Increase volume by 10%',
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed('/score');
+              },
+            )
           ],
         ),
       ),
