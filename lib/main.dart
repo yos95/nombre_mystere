@@ -7,13 +7,9 @@ import 'generat_nombre_mystere.dart';
 import 'check.dart';
 import 'Afficher_score.dart';
 import 'dart:async';
+import 'globals.dart' as globals;
 
 void main() => runApp(new MyApp());
-String nom;
-_SaveNom() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('nom', nom);
-}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -24,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Flutter Template'),
+      home: new MyHomePage(title: 'Nombre mystére'),
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => new MyHomePage(),
         '/score': (BuildContext context) => new AfficherScore(),
@@ -55,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return AlertDialog(
           title: new Text("Comment t'appele tu ?"),
           content: new TextField(
+            autofocus: true,
             controller: myController,
           ),
           actions: <Widget>[
@@ -62,13 +59,10 @@ class _MyHomePageState extends State<MyHomePage> {
             new FlatButton(
               child: new Text("Valider"),
               onPressed: () {
-                nom = myController.text;
-                print(nom);
-                _SaveNom();
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (BuildContext context) => new Jeux()));
+                globals.nom = myController.text;
+                print(globals.nom + 'main');
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) => Jeux()));
               },
             ),
           ],
@@ -84,13 +78,14 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         title: new Text(widget.title),
       ),
+      backgroundColor: Colors.lightBlueAccent,
       body: new Center(
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new RaisedButton(
               child: const Text(' Jouer une partie'),
-              color: Theme.of(context).accentColor,
+              color: Colors.white,
               elevation: 5.0,
               splashColor: Colors.blueGrey,
               onPressed: () {
@@ -101,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             new RaisedButton(
               child: const Text('Afficher les scores'),
-              color: Theme.of(context).accentColor,
+              color: Colors.white,
               elevation: 4.0,
               splashColor: Colors.blueGrey,
               onPressed: () {
