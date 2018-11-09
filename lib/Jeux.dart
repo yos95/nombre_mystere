@@ -4,23 +4,26 @@ import 'package:nombre_mystere/Database.dart';
 import 'package:nombre_mystere/Score.dart';
 import 'generat_nombre_mystere.dart';
 import 'check.dart';
-import 'globals.dart' as globals;
 
 var dbHelper = DBHelper();
+String nom;
 var nombre_mystere = generat_nombre_mystere();
 String result = '';
 
 class Jeux extends StatefulWidget {
   final String title = 'Jeux';
+  Jeux(String myparam) {
+    nom = myparam;
+    print(nom);
+  }
 
-  @override
   _Jeux createState() => new _Jeux();
 }
 
+@override
 class _Jeux extends State<Jeux> {
+  TextEditingController _controller = new TextEditingController();
   Widget build(BuildContext context) {
-    print(globals.nom);
-
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
@@ -47,6 +50,7 @@ class _Jeux extends State<Jeux> {
             new Container(
               margin: new EdgeInsets.all(25.0),
               child: new TextField(
+                controller: _controller,
                 autofocus: true,
                 inputFormatters: [
                   new LengthLimitingTextInputFormatter(2),
@@ -60,10 +64,10 @@ class _Jeux extends State<Jeux> {
 
                   setState(() {
                     result = result;
+                    _controller.clear();
                     if (!etat_partie) {
-                      print(globals.nom);
-                      ScoreUser scoreUser =
-                          new ScoreUser(globals.nom, nb_essais);
+                      print(etat_partie);
+                      ScoreUser scoreUser = new ScoreUser(nom, nb_essais);
                       dbHelper.initDb();
 
                       dbHelper.saveScore(scoreUser);
@@ -81,7 +85,7 @@ class _Jeux extends State<Jeux> {
                     ),
                     filled: true,
                     hintStyle: new TextStyle(color: Colors.grey[800]),
-                    hintText: "Entrez un chiffre",
+                    hintText: "Entrez un chiffre $nombre_mystere",
                     fillColor: Colors.white,
                     labelStyle: TextStyle(
                       color: Colors.white,

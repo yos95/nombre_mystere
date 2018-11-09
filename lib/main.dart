@@ -7,9 +7,9 @@ import 'generat_nombre_mystere.dart';
 import 'check.dart';
 import 'Afficher_score.dart';
 import 'dart:async';
-import 'globals.dart' as globals;
 
 void main() => runApp(new MyApp());
+String nom_send;
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => new MyHomePage(),
         '/score': (BuildContext context) => new AfficherScore(),
-        '/jeux': (BuildContext context) => new Jeux(),
+        '/jeux': (BuildContext context) => new Jeux(nom_send),
       },
       debugShowCheckedModeBanner: false,
     );
@@ -59,10 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
             new FlatButton(
               child: new Text("Valider"),
               onPressed: () {
-                globals.nom = myController.text;
-                print(globals.nom + 'main');
-                Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) => Jeux()));
+                nom_send = myController.text;
+                print(nom_send);
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => Jeux(nom_send)));
               },
             ),
           ],
@@ -90,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
               splashColor: Colors.blueGrey,
               onPressed: () {
                 _showDialog();
-
                 // Perform some action
               },
             ),
