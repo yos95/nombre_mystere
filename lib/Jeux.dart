@@ -99,7 +99,6 @@ class _Jeux extends State<Jeux> {
               icon: Icon(Icons.arrow_right),
               tooltip: 'Increase volume by 10%',
               onPressed: () {
-                Navigator.of(context).pop();
                 Navigator.of(context).pushNamed('/score');
               },
             ),

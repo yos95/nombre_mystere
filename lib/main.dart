@@ -101,7 +101,6 @@ class _MyHomePageState extends State<MyHomePage> {
               elevation: 4.0,
               splashColor: Colors.blueGrey,
               onPressed: () {
-                Navigator.of(context).pop();
                 Navigator.of(context).pushNamed('/score');
                 // Perform some action
               },
