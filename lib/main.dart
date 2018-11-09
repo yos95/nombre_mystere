@@ -85,6 +85,23 @@ class _MyHomePageState extends State<MyHomePage> {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            new Container(
+              margin: EdgeInsets.only(bottom: 80.0),
+              child: new Center(
+                child: new Card(
+                  elevation: 13.0,
+                  color: Colors.white70,
+                  child: new Container(
+                    width: MediaQuery.of(context).size.width / 1.3,
+                    height: 280.0,
+                    child: new Image.asset(
+                      'assets/Chiffres.jpg',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             new RaisedButton(
               child: const Text(' Jouer une partie'),
               color: Colors.white,
