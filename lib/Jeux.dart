@@ -85,7 +85,7 @@ class _Jeux extends State<Jeux> {
                     ),
                     filled: true,
                     hintStyle: new TextStyle(color: Colors.grey[800]),
-                    hintText: "Entrez un chiffre $nombre_mystere",
+                    hintText: "Entrez un chiffre",
                     fillColor: Colors.white,
                     labelStyle: TextStyle(
                       color: Colors.white,
